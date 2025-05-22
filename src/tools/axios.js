@@ -9,4 +9,19 @@ instance.interceptors.request.use((config) => {
     return config 
 })
 
+// Add response interceptor to handle auth errors
+instance.interceptors.response.use(
+    (response) => {
+        return response
+    },
+    (error) => {
+        if (error.response && error.response.status === 403) {
+            console.log('Authentication error detected')
+            // Optional: Handle token expiration or invalid token
+            // window.localStorage.removeItem('token')
+        }
+        return Promise.reject(error)
+    }
+)
+
 export default instance

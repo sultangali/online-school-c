@@ -43,9 +43,17 @@ export const fetchAllUsers = createAsyncThunk("auth/fetchAllUsers", async () => 
 }
 )
 
-export const fetchAuthMe = createAsyncThunk('auth/fetchAuthMe', async () => {
-    const { data } = await axios.get('/api/user/me')
-    return data
+export const fetchAuthMe = createAsyncThunk('auth/fetchAuthMe', async (_, { rejectWithValue }) => {
+    try {
+        const { data } = await axios.get('/api/user/me')
+        return data
+    } catch (error) {
+        console.log('Error fetching user data:', error.message)
+        if (!error.response) {
+            throw error
+        }
+        return rejectWithValue(error.response?.data || 'Authentication failed')
+    }
 })
 
 
