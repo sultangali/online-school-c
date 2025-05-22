@@ -9,12 +9,15 @@ instance.interceptors.request.use(
     (config) => {
         const token = window.localStorage.getItem('token')
         console.log('📤 Making request to:', config.url)
-        console.log('📤 Request headers:', {
-            ...config.headers,
-            Authorization: token ? `${token.substring(0, 15)}...` : 'No token'
-        })
         
-        config.headers.Authorization = token
+        if (token) {
+            console.log('📤 Request headers with token:', `${token.substring(0, 15)}...`)
+            config.headers.Authorization = `Bearer ${token}`
+        } else {
+            console.log('📤 Request without authentication token')
+            // Don't set Authorization header when no token exists
+        }
+        
         return config
     },
     (error) => {
