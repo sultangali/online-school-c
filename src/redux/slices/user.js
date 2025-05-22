@@ -44,11 +44,26 @@ export const fetchAllUsers = createAsyncThunk("auth/fetchAllUsers", async () => 
 )
 
 export const fetchAuthMe = createAsyncThunk('auth/fetchAuthMe', async (_, { rejectWithValue }) => {
+    console.log('🔄 Fetching current user data...')
+    
+    // Check if token exists
+    const token = window.localStorage.getItem('token')
+    if (!token) {
+        console.log('⚠️ No token found in localStorage')
+    } else {
+        console.log('🔑 Token found in localStorage:', token?.substring(0, 15) + '...')
+    }
+    
     try {
+        console.log('🔍 Sending request to /api/user/me')
         const { data } = await axios.get('/api/user/me')
+        console.log('✅ Received user data:', data?.username || data?.email || 'Unknown user')
         return data
     } catch (error) {
-        console.log('Error fetching user data:', error.message)
+        console.log('❌ Error fetching user data:', error.message)
+        console.log('Response status:', error.response?.status)
+        console.log('Response data:', error.response?.data)
+        
         if (!error.response) {
             throw error
         }
