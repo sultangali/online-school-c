@@ -329,7 +329,7 @@ const Profile = () => {
                       onClick={() => inputFileRef.current.click()}
                       src={
                         userData && userData.avatar
-                          ? `http://localhost:5000${userData.avatar}`
+                          ? `http://34.116.228.89${userData.avatar}`
                           : alt
                       }
                       alt="Мына жерде сурет туру керек"
